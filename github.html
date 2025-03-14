@@ -1,22 +1,388 @@
-<div style="text-align: center;">
-    <h1 style ="font-family: 'Fira Code', monospace; font-size: 40px; color: #33FF33;">
-        Welcome to my GitHub! I'm Firdaus, aka Daus
-    </h1>
-    <p style="font-size: 20px; color: #FFFFFF; animation: fadeIn 2s;">
-        Learning in Progress
-    </p>
-    <p style="font-size: 20px; color: #FFFFFF; animation: fadeIn 4s;">
-      !
-    </p>
-  </div>
-  
-  <style>
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-  </style>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Isengg bikin</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #1a1a1a; /* Warna dasar gelap */
+            color: white;
+            overflow-x: hidden; /* Menghindari scroll horizontal */
+            position: relative;
+        }
+
+        /* Background Langit Malam */
+        #background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #0f0c29, #302b63, #24243e); /* Gradien langit malam */
+            z-index: -1; /* Memastikan animasi di belakang konten */
+            overflow: hidden;
+        }
+
+        /* Bintang-Bintang */
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            animation: twinkle 2s infinite alternate; /* Animasi berkedip */
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
+        /* Posisi dan ukuran bintang acak */
+        .star:nth-child(1) { width: 2px; height: 2px; top: 10%; left: 20%; animation-duration: 1.5s; }
+        .star:nth-child(2) { width: 3px; height: 3px; top: 20%; left: 50%; animation-duration: 2s; }
+        .star:nth-child(3) { width: 1px; height: 1px; top: 30%; left: 70%; animation-duration: 1.8s; }
+        .star:nth-child(4) { width: 2px; height: 2px; top: 40%; left: 30%; animation-duration: 2.5s; }
+        .star:nth-child(5) { width: 3px; height: 3px; top: 50%; left: 80%; animation-duration: 1.2s; }
+        .star:nth-child(6) { width: 1px; height: 1px; top: 60%; left: 10%; animation-duration: 2.3s; }
+        .star:nth-child(7) { width: 2px; height: 2px; top: 70%; left: 60%; animation-duration: 1.7s; }
+
+        /* Bulan */
+        .moon {
+            position: absolute;
+            top: 5%;
+            right: 5%;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, #f1f1f1 50%, transparent 60%);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5); /* Cahaya lembut */
+        }
+
+        .sonic {
+            position: absolute;
+            bottom: 10%; /* Posisi Sonic di bagian bawah layar */
+            width: 150px; /* Ukuran Sonic */
+            height: auto;
+            animation: runSonic 10s infinite linear; /* Animasi Sonic berlari */
+        }
+
+        @keyframes runSonic {
+            0% { transform: translateX(-200px); } /* Mulai dari luar layar kiri */
+            100% { transform: translateX(100vw); } /* Berakhir di luar layar kanan */
+        }
+
+        .mario {
+            position: absolute;
+            bottom: 25%; /* Posisi Mario lebih tinggi dari Sonic */
+            width: 120px; /* Ukuran Mario sedikit lebih kecil dari Sonic */
+            height: auto;
+            animation: runMario 8s infinite linear; /* Animasi Mario berlari, lebih cepat */
+        }
+
+        @keyframes runMario {
+            0% { transform: translateX(-200px); } /* Mulai dari luar layar kiri */
+            100% { transform: translateX(100vw); } /* Berakhir di luar layar kanan */
+        }
+
+        /* Navbar */
+        nav {
+            background-color: #0d0d0d;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ff6f61;
+        }
+
+        /* Section Styling */
+        section {
+            padding: 6rem 2rem 2rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            opacity: 0; /* Awalnya tidak terlihat */
+            transform: translateX(100px); /* Awalnya di luar layar kanan */
+            transition: opacity 0.5s ease, transform 0.5s ease; /* Transisi halus */
+        }
+
+        /* Kelas untuk animasi saat elemen terlihat */
+        section.visible {
+            opacity: 1;
+            transform: translateX(0); /* Kembali ke posisi normal */
+        }
+
+        section h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        section p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        /* Dashboard */
+        #dashboard {
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        #dashboard .profile-img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 1rem;
+            border: 3px solid #ff6f61;
+            transition: transform 0.3s;
+        }
+
+        #dashboard .profile-img:hover {
+            transform: scale(1.1);
+        }
+
+        /* About */
+        #about {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Mabar Bang */
+        #mabar-bang {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+            max-width: 1200px; /* Membatasi lebar maksimum grid */
+            width: 100%;
+        }
+
+        .game-item {
+            background-color: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5); /* Efek bayangan */
+            transition: transform 0.3s, box-shadow 0.3s; /* Efek transisi */
+        }
+
+        .game-item:hover {
+            transform: translateY(-10px); /* Efek mengangkat saat hover */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7); /* Bayangan lebih besar saat hover */
+        }
+
+        .game-item img {
+            width: 100%;
+            height: 180px; /* Tinggi tetap untuk konsistensi */
+            object-fit: cover;
+            aspect-ratio: 16/9;
+            border-bottom: 2px solid #ff6f61; /* Garis bawah berwarna */
+            cursor: pointer; /* Menunjukkan gambar dapat diklik */
+        }
+
+        .game-item p {
+            padding: 1rem;
+            font-size: 1rem;
+        }
+
+        /* Modal untuk Gambar Besar */
+        .modal {
+            display: none; /* Modal tersembunyi secara default */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9); /* Latar belakang gelap */
+            z-index: 200; /* Di atas semua elemen */
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border: 3px solid #ff6f61;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex; 
+            opacity: 1;
+        }
+
+        
+        #contact {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .social-links a img {
+            width: 40px;
+            height: 40px;
+            transition: transform 0.3s;
+        }
+
+        .social-links a img:hover {
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Bergerak -->
+    <div id="background-animation">
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="star"></div>
+        <div class="moon"></div>
+        <img src="asset/sonic-removebg-preview.png" alt="Sonic Running" class="sonic">
+        <img src="asset/image-removebg-preview (1).png" alt="Mario Running" class="mario">
+    </div>
+
+    <!-- Navbar -->
+    <nav>
+        <ul>
+            <li><a href="#dashboard">Dashboard</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#mabar-bang">Mabar Bang</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Dashboard -->
+    <section id="dashboard">
+        <div>
+            <img src="asset/foto2.jpg" alt="Foto Profil Daus" class="profile-img">
+            <h1>Halo Bang!</h1>
+            <p>Kenalin gw Daus, gw seorang programer yang gabut, Mabar bang??</p>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <div>
+            <h1>About</h1>
+            <p>
+                Kenalin Gw Firdaus Adi Nugroho atau biasa di panggil Daus, gw seorang programer yang gabut dan suka mabar.
+                gw suka game yang genrenya horor cuman gw jarang main game horor bosen banget coy main sendiri
+            </p>
+        </div>
+    </section>
+
+    <!-- Mabar Bang -->
+    <section id="mabar-bang">
+        <div>
+            <h1>Mabar Bang</h1>
+            <div class="game-grid">
+                <div class="game-item">
+                    <img src="asset/epep.jpg" alt="Free Fire" onclick="showModal(this.src)">
+                    <p>Gas Kita mabar epep Bang untuk idnya langsung aja catat bang</p>
+                </div>
+                <div class="game-item">
+                    <img src="asset/ML.jpg" alt="Mobile Legends" onclick="showModal(this.src)">
+                    <p>Gas Kita mabar ML Bang untuk idnya langsung aja catat bang</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <div>
+            <h1>Contact</h1>
+            <p>Hubungi gw melalui media sosial berikut:</p>
+            <div class="social-links">
+                <a href="https://www.instagram.com/jusanggur11/" target="_blank">
+                    <img src="asset/instagram (2).png" alt="Instagram">
+                </a>
+                <a href="https://t.me/DausBasudara" target="_blank">
+                    <img src="asset/telegram.png" alt="Telegram">
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal untuk Gambar Besar -->
+    <div id="modal" class="modal" onclick="closeModal()">
+        <img id="modal-img" src="" alt="Gambar Besar">
+    </div>
+
+    <!-- JavaScript untuk Modal dan Animasi Scroll -->
+    <script>
+        // JavaScript untuk Modal
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-img');
+
+        function showModal(src) {
+            modalImg.src = src;
+            modal.classList.add('show');
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+        }
+
+        // JavaScript untuk Animasi Scroll
+        const sections = document.querySelectorAll('section');
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Berhenti mengamati setelah muncul
+                }
+            });
+        }, {
+            threshold: 0.1 // Elemen muncul saat 10% terlihat di viewport
+        });
+
+        sections.forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+</body>
+</html>
